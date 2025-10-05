@@ -1,5 +1,8 @@
-echo "Pushing code to Github...\n"
+clear
+echo -e "Pushing code to Github...\n"
 git add .
 git commit -m "commit"
 git push origin main
-echo "Changes committed to Github successfully!"
+echo -e "Changes committed to Github successfully!\n"
+sleep 2
+clear
