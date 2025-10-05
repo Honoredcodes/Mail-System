@@ -1,15 +1,16 @@
-E = g++ 
+E = g++
 EFLAG = -std=c++17 \
--Imodules/includes \
--Imodules/mail \
--Imodules/service \
--Imodules/utility
+        -stdlib=libc++ \
+        -Imodules/includes \
+        -Imodules/service \
+        -Imodules/utility
+# -Imodules/mail \
 
 SOURCE = \
 main.cpp \
-modules/mail/app.cpp \
 modules/service/filesys.cpp \
 modules/utility/utils.cpp 
+# modules/mail/app.cpp \
 
 APP = echomail
 
@@ -27,8 +28,8 @@ endif
 
 all:
 	@echo "Please wait, while the program is being compiled..."
-	@$(E) $(EFLAGS) $(SOURCE) -o $(APP) $(LDFLAGS)
+	@$(E) $(EFLAG) $(SOURCE) -o $(APP) $(LDFLAGS)
 
 clean:
-	@echo "Cleaning and remove previous build..."
+	@echo "Cleaning and removing previous build..."
 	rm -f $(APP)

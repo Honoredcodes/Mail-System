@@ -1,15 +1,14 @@
 #include <iostream>
 #include <string>
-#include <filesystem>
 #include "modules/service/filesys.h"
 #include "modules/utility/utils.h"
-namespace fs = std::filesystem;
 
 bool programRunning = false;
 std::string root, parentfilename;
 GeneralUtility util;
 int main();
 void showBanner() {
+    util.clearConsole();
     std::cout << "====================================" << std::endl;
     std::cout << "  $ECHO:  Welcome to Mail System    " << std::endl;
     std::cout << "====================================" << std::endl;
@@ -25,7 +24,11 @@ void promptRootDirectory(std::string& root, std::string& parentfilename) {
             << "\033[94m[3] \033[93mDOCUMENTS\n"
             << "\033[92m\033[1mCHOOSE ROOT DIRECTORY [0 EXIT]: ";
         std::getline(std::cin, choice);
+        util.clearConsole();
         if (choice == "0") {
+            std::cout << "\033[92m\033[1mTERMINATING PROGRAM...\n";
+            util.delay(2);
+            util.clearConsole();
             exit(0);
         }
         if (choice == "1") root = "Desktop";
@@ -50,6 +53,9 @@ void promptRootDirectory(std::string& root, std::string& parentfilename) {
 }
 int homedisplay() {
     int x;
+    std::cout << "====================================" << std::endl;
+    std::cout << "  $ECHO:  ECHOMAIL V2 HOMEPAGE      " << std::endl;
+    std::cout << "====================================" << std::endl;
     std::cout << "\033[92m\033[1m"
         << "[1] EMAIL SENDER\n"
         << "[2] SMTP TESTER\n"

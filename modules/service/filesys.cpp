@@ -1,13 +1,13 @@
 #include "filesys.h"
 #include <iostream>
 #include <vector>
-#include <filesystem>
 #include "../utility/utils.h"
-namespace fs = std::filesystem;
 
 managefilesystem::managefilesystem(std::string& root, std::string directorychoice) {
     GeneralUtility util;
     util.makeRootDirectory(root, directorychoice);
+    util.delay(2);
+    util.clearConsole();
 }
 
 managefilesystem::~managefilesystem() {}
@@ -15,8 +15,6 @@ managefilesystem::~managefilesystem() {}
 bool managefilesystem::prepareEmailFiles(const std::string parent) {
     GeneralUtility util;
     int flag = 0;
-    util.makeDirectory(const_cast<std::string&>(parent), "constant");
-    util.makeDirectory(const_cast<std::string&>(parent), "variable");
     std::string constantpath = fs::path(parent) / "EMAIL SENDER" / "constant";
     std::string variablepath = fs::path(parent) / "EMAIL SENDER" / "variable";
     util.makeDirectory(const_cast<std::string&>(constantpath), "live");

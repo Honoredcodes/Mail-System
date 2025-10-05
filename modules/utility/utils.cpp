@@ -5,11 +5,9 @@
 #include <chrono>
 #include <ctime>
 #include <thread>
-#include <filesystem>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
 #include "utils.h"
-namespace fs = std::filesystem;
 
 
 void GeneralUtility::toUppercase(std::string& str) {
@@ -19,11 +17,13 @@ void GeneralUtility::toUppercase(std::string& str) {
 }
 
 bool GeneralUtility::makeRootDirectory(std::string& root, std::string directorychoice) {
-    root = fs::path(getenv("HOME")) / directorychoice;
+    std::string temp = root;
+    root = fs::path(getenv("HOME")) / temp / directorychoice;
+    clearConsole();
     if (!fs::exists(root)) {
         try {
             fs::create_directories(root);
-            std::cout << "[INF] PARENT DIRECTORY EXIST: TRUE" << std::endl;
+            std::cout << "[INF] PARENT DIRECTORY CREATED: TRUE" << std::endl;
         }
         catch (const fs::filesystem_error& e) {
             std::cerr << "[WAR] PARENT DIRECTORY EXIST: FALSE" << std::endl;
@@ -36,32 +36,30 @@ bool GeneralUtility::makeRootDirectory(std::string& root, std::string directoryc
     return true;
 }
 
-bool GeneralUtility::makeDirectory(std::string& root, std::string directory) {
-    fs::path tempdirectory = fs::path(root) / directory;
-    if (!fs::exists(tempdirectory)) {
-        try {
-            fs::create_directories(tempdirectory);
-            return true;
-        }
-        catch (const fs::filesystem_error& e) {
-            return false;
-        }
+bool GeneralUtility::makeDirectory(const std::string root, std::string directory) {
+    try {
+        fs::path createDirectory = fs::path(root) / directory;
+        return fs::create_directories(createDirectory) || fs::exists(createDirectory);
+    }
+    catch (const fs::filesystem_error&) {
+        return false;
     }
 }
 
+
 bool GeneralUtility::createTextFile(const std::string parent, const std::string filename) {
     fs::path filepath = fs::path(parent) / filename;
-    if (!fs::exists(filepath)) {
-        std::ofstream file(filepath);
-        if (file) {
-            file.close();
-            return true;
-        }
-        else {
-            return false;
-        }
+    if (fs::exists(filepath)) {
+        return true;
     }
+    std::ofstream file(filepath);
+    if (!file) {
+        return false;
+    }
+    file.close();
+    return true;
 }
+
 
 void GeneralUtility::clearConsole() {
 #ifdef _WIN32
