@@ -5,6 +5,7 @@
 
 class managefilesystem {
 public:
+    std::string echo;
     managefilesystem(std::string& root, std::string directorychoice);
     ~managefilesystem();
 

@@ -6,6 +6,7 @@
 managefilesystem::managefilesystem(std::string& root, std::string directorychoice) {
     GeneralUtility util;
     util.makeRootDirectory(root, directorychoice);
+    echo = root;
     util.delay(2);
     util.clearConsole();
 }

@@ -5,12 +5,15 @@
 #include <set>
 #include "mail.h"
 #include "../utility/utils.h"
+#include "../service/filesys.h"
 namespace fs = std::filesystem;
 GeneralUtility util;
+managefilesystem filesys;
+
 bool mailsystem::sorter() {
-    fs::path in = 
-    std::ifstream read(in);
-    std::ofstream write(out);
+    fs::path filepath = fs::path(filesys.echo) / "SORTER";
+    std::ifstream read(filepath / "raw.txt");
+    std::ofstream write(filepath / "results.txt");
     if (!read || !write) return false;
 
     char choice;

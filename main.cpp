@@ -2,20 +2,23 @@
 #include <string>
 #include "modules/service/filesys.h"
 #include "modules/utility/utils.h"
+#include "modules/mail/mail.h"
 
 bool programRunning = false;
 std::string root, parentfilename;
 GeneralUtility util;
+mailsystem app;
 int main();
 void showBanner() {
     util.clearConsole();
-    std::cout << "====================================" << std::endl;
-    std::cout << "  $ECHO:  Welcome to Mail System    " << std::endl;
-    std::cout << "====================================" << std::endl;
+    std::cout << "\t\t====================================" << std::endl;
+    std::cout << "\t\t  $ECHO:  Welcome to Mail System    " << std::endl;
+    std::cout << "\t\t====================================" << std::endl;
 }
 
 void promptRootDirectory(std::string& root, std::string& parentfilename) {
     if (programRunning) return;
+    showBanner();
     std::string choice;
     do {
         std::cout
@@ -68,7 +71,6 @@ int homedisplay() {
 }
 
 int main() {
-    showBanner();
     promptRootDirectory(root, parentfilename);
     managefilesystem fsmanager(root, parentfilename);
     std::string parent = fs::path(root) / parentfilename;
@@ -99,14 +101,18 @@ int main() {
         break;
     case 4:
         if (fsmanager.prepareSorterFiles(parent)) {
-            std::cout << "\033[92m[INF] SORTER FILES PREPARED SUCCESSFULLY.\033[0m" << std::endl;
+            // std::cout << "\033[92m[INF] SORTER FILES PREPARED SUCCESSFULLY.\033[0m" << std::endl;
+            (app.sorter()) ?
+                std::cout << "PROGRAM ENDS GRACEFULLY..\n" :
+                std::cout << "PROGRAM FAILED TRY AGAIN...\n";
         }
         break;
     default:
         std::cout << "\033[91m[WAR] INVALID INPUT! PLEASE TRY AGAIN.\033[0m" << std::endl;
         util.delay(2);
         util.clearConsole();
-        main();
         break;
     }
+    main();
+
 }
