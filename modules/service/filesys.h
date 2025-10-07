@@ -2,17 +2,18 @@
 #define FILESYS_H
 #include <string>
 #include <vector>
+#include "../utility/utils.h"
 
-class managefilesystem {
+class managefilesystem : public GeneralUtility {
 public:
-    std::string echo;
-    managefilesystem(std::string& root, std::string directorychoice);
+    std::string homedir;
+    managefilesystem();
     ~managefilesystem();
 
-    bool prepareEmailFiles(const std::string parent);
-    bool prepareSMTPTesterFiles(const std::string parent);
-    bool prepareExtractorFiles(const std::string parent);
-    bool prepareSorterFiles(const std::string parent);
+    bool prepareEmailFiles();
+    bool prepareSMTPTesterFiles();
+    bool prepareExtractorFiles();
+    bool prepareSorterFiles();
 };
 
 #endif

@@ -69,6 +69,4 @@ void GeneralUtility::clearConsole() {
 #endif
 }
 
-void GeneralUtility::delay(int s) {
-    std::this_thread::sleep_for(std::chrono::seconds(s));
-}
+void GeneralUtility::delay(int s) { std::this_thread::sleep_for(std::chrono::seconds(s)); }

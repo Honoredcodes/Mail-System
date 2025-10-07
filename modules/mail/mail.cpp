@@ -4,21 +4,24 @@
 #include <unordered_set>
 #include <set>
 #include "mail.h"
-#include "../utility/utils.h"
-#include "../service/filesys.h"
 namespace fs = std::filesystem;
-GeneralUtility util;
-managefilesystem filesys;
 
+bool mailsystem::mailconstant() {}
+bool mailsystem::mailvariable() {}
+bool mailsystem::smtptester() {}
+bool mailsystem::extractor() {
+    
+}
 bool mailsystem::sorter() {
-    fs::path filepath = fs::path(filesys.echo) / "SORTER";
+    if (!prepareSorterFiles()) return false;
+    fs::path filepath = fs::path(homedir) / "SORTER";
     std::ifstream read(filepath / "raw.txt");
-    std::ofstream write(filepath / "results.txt");
+    std::ofstream write(filepath / "sorted.txt");
     if (!read || !write) return false;
 
     char choice;
-    util.clearConsole();
-    std::cout << "[INF] PLEASE MAKE SURE RAW FILE ISN'T EMPTY...";
+    clearConsole();
+    std::cout << "[INF] PLEASE MAKE SURE RAW FILE ISN'T EMPTY...\n";
     std::cout << "Sort alphabetically? (y/n): ";
     std::cin >> choice;
 
@@ -52,12 +55,14 @@ bool mailsystem::sorter() {
             write << l << '\n';
     }
     else {
-        util.clearConsole();
+        clearConsole();
         std::cout << "[ERR] INVALID CHOICE, PLEASE TRY AGAIN.\n";
-        util.delay(2);
+        delay(2);
         return false;
     }
-    util.clearConsole();
-    std::cout << "TOTAL DUPLICATES MERGED" << (total - unique) << "\n";
+    clearConsole();
+    std::cout << (total - unique) << "TOTAL DUPLICATES MERGED." << "\n";
+    delay(4);
     return true;
 }
+

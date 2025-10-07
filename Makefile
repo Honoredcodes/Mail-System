@@ -3,14 +3,14 @@ EFLAG = -std=c++17 \
         -stdlib=libc++ \
         -Imodules/includes \
         -Imodules/service \
-        -Imodules/utility
-# -Imodules/mail \
+        -Imodules/utility \
+        -Imodules/mail 
 
 SOURCE = \
 main.cpp \
 modules/service/filesys.cpp \
-modules/utility/utils.cpp 
-# modules/mail/app.cpp \
+modules/utility/utils.cpp \
+modules/mail/mail.cpp
 
 APP = echomail
 
