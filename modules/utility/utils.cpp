@@ -1,12 +1,3 @@
-#include <iostream>
-#include <sstream>
-#include <fstream>
-#include <string>
-#include <chrono>
-#include <ctime>
-#include <thread>
-#include <sys/stat.h>
-#include <sys/ioctl.h>
 #include "utils.h"
 
 
@@ -15,7 +6,6 @@ void GeneralUtility::toUppercase(std::string& str) {
         c = toupper(c);
     }
 }
-
 bool GeneralUtility::makeRootDirectory(std::string& root, std::string directorychoice) {
     std::string temp = root;
     root = fs::path(getenv("HOME")) / temp / directorychoice;
@@ -35,7 +25,6 @@ bool GeneralUtility::makeRootDirectory(std::string& root, std::string directoryc
     }
     return true;
 }
-
 bool GeneralUtility::makeDirectory(const std::string root, std::string directory) {
     try {
         fs::path createDirectory = fs::path(root) / directory;
@@ -45,8 +34,18 @@ bool GeneralUtility::makeDirectory(const std::string root, std::string directory
         return false;
     }
 }
-
-
+void GeneralUtility::extract(const std::string text, std::unordered_set<std::string>& results) {
+    std::smatch match;
+    const std::regex emailPattern(R"(([\w\.-]+)@([\w\.-]+)\.([a-zA-Z]{2,}))");
+    auto start = text.cbegin();
+    std::unordered_set<std::string>localset;
+    while (std::regex_search(start, text.cend(), match, emailPattern)) {
+        localset.insert(match[0]);
+        start = match.suffix().first;
+    }
+    std::lock_guard<std::mutex> lock(mtx);
+    results.insert(localset.begin(), localset.end());
+}
 bool GeneralUtility::createTextFile(const std::string parent, const std::string filename) {
     fs::path filepath = fs::path(parent) / filename;
     if (fs::exists(filepath)) {
@@ -59,8 +58,6 @@ bool GeneralUtility::createTextFile(const std::string parent, const std::string 
     file.close();
     return true;
 }
-
-
 void GeneralUtility::clearConsole() {
 #ifdef _WIN32
     system("cls");
@@ -68,5 +65,4 @@ void GeneralUtility::clearConsole() {
     system("clear");
 #endif
 }
-
 void GeneralUtility::delay(int s) { std::this_thread::sleep_for(std::chrono::seconds(s)); }
