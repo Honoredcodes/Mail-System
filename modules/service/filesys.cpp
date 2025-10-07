@@ -60,9 +60,7 @@ managefilesystem::managefilesystem() {
     delay(2);
     clearConsole();
 }
-
 managefilesystem::~managefilesystem() {}
-
 bool managefilesystem::prepareEmailFiles() {
     int flag = 0;
     std::string constantpath = fs::path(homedir) / "EMAIL SENDER" / "constant";
@@ -83,7 +81,6 @@ bool managefilesystem::prepareEmailFiles() {
     }
     return flag == 2;
 }
-
 bool managefilesystem::prepareSMTPTesterFiles() {
     makeDirectory(const_cast<std::string&>(homedir), "SMTP TESTER");
     std::string SMTPTESTERDIRECTORY = fs::path(homedir) / "SMTP TESTER";
@@ -93,7 +90,6 @@ bool managefilesystem::prepareSMTPTesterFiles() {
     }
     return true;
 }
-
 bool managefilesystem::prepareExtractorFiles() {
     makeDirectory(const_cast<std::string&>(homedir), "EXTRACTOR");
     std::string EXTRACTORDIRECTORY = fs::path(homedir) / "EXTRACTOR";
@@ -103,7 +99,6 @@ bool managefilesystem::prepareExtractorFiles() {
     }
     return true;
 }
-
 bool managefilesystem::prepareSorterFiles() {
     makeDirectory(const_cast<std::string&>(homedir), "SORTER");
     std::string SORTERDIRECTORY = fs::path(homedir) / "SORTER";

@@ -1,5 +1,3 @@
-#include <iostream>
-#include <string>
 #include "modules/service/filesys.h"
 #include "modules/utility/utils.h"
 #include "modules/mail/mail.h"
@@ -33,7 +31,7 @@ int main() {
     case 0:
         utility.clearConsole();
         std::cout << "\033[93m[INF] THANK YOU FOR USING $ECHO MAIL SYSTEM. GOODBYE!\033[0m" << std::endl;
-        utility.delay(2);
+        utility.delay(3);
         exit(0);
         break;
     case 1:
@@ -47,12 +45,14 @@ int main() {
 
         break;
     case 3:
-
-        std::cout << "\033[92m[INF] EXTRACTOR FILES PREPARED SUCCESSFULLY.\033[0m" << std::endl;
-
+        (app.extractor()) ?
+            std::cout << "\033[92m[INF] EXTRACTOR FILES PREPARED SUCCESSFULLY.\033[0m" << std::endl :
+            std::cout << "\033[92m[INF] EXTRACTOR FILES PREPARED SUCCESSFULLY.\033[0m" << std::endl;
         break;
     case 4:
-        (app.sorter()) ? std::cout << "PROGRAM ENDS GRACEFULLY..\n" : std::cout << "PROGRAM FAILED TRY AGAIN...\n";
+        (app.sorter()) ?
+            std::cout << "PROGRAM ENDS GRACEFULLY..\n" :
+            std::cout << "PROGRAM FAILED TRY AGAIN...\n";
         break;
     default:
         std::cout << "\033[91m[WAR] INVALID INPUT! PLEASE TRY AGAIN.\033[0m" << std::endl;
