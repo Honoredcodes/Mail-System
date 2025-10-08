@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "../includes/colors.h"
 
 
 void GeneralUtility::toUppercase(std::string& str) {
@@ -34,18 +35,6 @@ bool GeneralUtility::makeDirectory(const std::string root, std::string directory
         return false;
     }
 }
-void GeneralUtility::extract(const std::string text, std::unordered_set<std::string>& results) {
-    std::smatch match;
-    const std::regex emailPattern(R"(([\w\.-]+)@([\w\.-]+)\.([a-zA-Z]{2,}))");
-    auto start = text.cbegin();
-    std::unordered_set<std::string>localset;
-    while (std::regex_search(start, text.cend(), match, emailPattern)) {
-        localset.insert(match[0]);
-        start = match.suffix().first;
-    }
-    std::lock_guard<std::mutex> lock(mtx);
-    results.insert(localset.begin(), localset.end());
-}
 bool GeneralUtility::createTextFile(const std::string parent, const std::string filename) {
     fs::path filepath = fs::path(parent) / filename;
     if (fs::exists(filepath)) {
@@ -65,4 +54,32 @@ void GeneralUtility::clearConsole() {
     system("clear");
 #endif
 }
-void GeneralUtility::delay(int s) { std::this_thread::sleep_for(std::chrono::seconds(s)); }
+void GeneralUtility::delay(int s) {
+    std::this_thread::sleep_for(std::chrono::seconds(s));
+}
+void GeneralUtility::servicedisplay(const std::string title) {
+    std::cout
+        << "====================================\n"
+        << "   ECHOMAIL V2 " << title << std::endl
+        << "====================================\n";
+}
+bool errormessage(int code) {
+    switch (code) {
+    case 324:
+        std::cerr << "[ERR] PEOGRAM FAILED TO CREATE ROOT DIRECTORY.\n";
+        break;
+    case 325:
+        std::cerr << "[ERR] PEOGRAM FAILED TO CREATE PROJECT DIRECTORY\n";
+        break;
+    case 326:
+        std::cerr << "[ERR] PEOGRAM FAILED TO READ FROM FILE\n";
+        break;
+    case 327:
+        std::cerr << "[ERR] PEOGRAM FAILED TO WRITE TO FILE\n";
+        break;
+    default:
+        std::cerr << "[ERR] UNKNWON ERROR CODE...\n";
+        break;
+    }
+    return false;
+}

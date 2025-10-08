@@ -1,6 +1,8 @@
 #include "modules/service/filesys.h"
 #include "modules/utility/utils.h"
 #include "modules/mail/mail.h"
+#include "modules/includes/colors.h"
+
 
 
 GeneralUtility utility;
@@ -8,20 +10,25 @@ mailsystem app;
 int main();
 
 int homedisplay() {
+    utility.clearConsole();
     int x;
-    std::cout << "====================================" << std::endl;
-    std::cout << "  $ECHO:  ECHOMAIL V2 HOMEPAGE      " << std::endl;
-    std::cout << "====================================" << std::endl;
-    std::cout << "\033[92m\033[1m"
-        << "[1] EMAIL SENDER\n"
-        << "[2] SMTP TESTER\n"
-        << "[3] EXTRACTOR\n"
-        << "[4] SORTER\n"
-        << "[0] EXIT\n"
-        << "CHOOSE YOUR SERVICE: \033[0m";
+    std::cout
+        << Color::brightGreen << "====================================\n"
+        << Color::brightBlue << "  $ECHO: "
+        << Color::brightRed << "ECHOMAIL V2 HOMEPAGE      \n"
+        << Color::brightGreen << "====================================\n"
+        << Color::reset
+        << Color::brightGreen << "[1]" << Color::brightRed << " EMAIL SENDER\n"
+        << Color::brightGreen << "[2]" << Color::brightRed << " SMTP TESTER\n"
+        << Color::brightGreen << "[3]" << Color::brightRed << " EXTRACTOR\n"
+        << Color::brightGreen << "[4]" << Color::brightRed << " SORTER\n"
+        // << Color::brightGreen << "[5]" << Color::brightRed << " CONFIG\n"
+        << Color::brightGreen << "[0]" << Color::brightRed << " EXIT\n"
+        << Color::brightGreen << "CHOOSE YOUR SERVICE: \033[0m";
     std::cin >> x;
     return x;
 }
+
 
 int main() {
 
@@ -30,8 +37,9 @@ int main() {
     {
     case 0:
         utility.clearConsole();
-        std::cout << "\033[93m[INF] THANK YOU FOR USING $ECHO MAIL SYSTEM. GOODBYE!\033[0m" << std::endl;
+        std::cout << "\033[93m[INF] TERMINATING ECHOMAIL PROGRAM IN 3 SECS... GOODBYE!\033[0m" << std::endl;
         utility.delay(3);
+        utility.clearConsole();
         exit(0);
         break;
     case 1:
@@ -45,9 +53,8 @@ int main() {
 
         break;
     case 3:
-        (app.extractor()) ?
-            std::cout << "\033[92m[INF] EXTRACTOR FILES PREPARED SUCCESSFULLY.\033[0m" << std::endl :
-            std::cout << "\033[92m[INF] EXTRACTOR FILES PREPARED SUCCESSFULLY.\033[0m" << std::endl;
+        if (!app.extractor()) std::cout << "[WAR] EXTRACTOR PROGRAM FAILED, CONTACT HELP." << std::endl;
+        utility.delay(4);
         break;
     case 4:
         (app.sorter()) ?

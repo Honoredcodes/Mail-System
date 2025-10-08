@@ -3,6 +3,18 @@ namespace fs = std::filesystem;
 void tester() {
 
 }
+void mailsystem::extract(const std::string text, std::unordered_set<std::string>& results) {
+    std::smatch match;
+    const std::regex emailPattern(R"(([\w\.-]+)@([\w\.-]+)\.([a-zA-Z]{2,}))");
+    auto start = text.cbegin();
+    std::unordered_set<std::string>localset;
+    while (std::regex_search(start, text.cend(), match, emailPattern)) {
+        localset.insert(match[0]);
+        start = match.suffix().first;
+    }
+    std::lock_guard<std::mutex> lock(mtx);
+    results.insert(localset.begin(), localset.end());
+}
 bool mailsystem::mailconstant() {}
 bool mailsystem::mailvariable() {}
 bool mailsystem::smtptester() {
@@ -32,12 +44,14 @@ bool mailsystem::smtptester() {
     std::unordered_set<std::string> results;
     std::mutex resultsMutex;
 
-
+    return false;
 }
 bool mailsystem::extractor() {
+    clearConsole();
+    servicedisplay("EMAIL EXTRACTOR");
     if (!prepareExtractorFiles()) return false;
     fs::path filepath = fs::path(homedir) / "EXTRACTOR";
-    std::ifstream read(filepath / "raw", std::ios::binary);
+    std::ifstream read(filepath / "raw.txt", std::ios::binary);
     if (!read) return false;
     read.seekg(0, std::ios::end);
     size_t fileSize = static_cast<size_t>(read.tellg());
@@ -47,11 +61,10 @@ bool mailsystem::extractor() {
     read.close();
     size_t numThreads = 4;
     if (fileSize > 2 * 1024 * 1024) {
-        std::cout << "DATA SIZE FOUND IS ABOVE 2MB.\nMULTITHREADING IS RECOMMENDED.\n";
         size_t maxThreads = std::thread::hardware_concurrency();
-        if (maxThreads == 0) maxThreads = 8;
-        std::cout << "YOUR CPU SUPPORTS UP TO " << maxThreads << " THREADS.\n";
         do {
+            std::cout << "[INF] DATA SIZE FOUND IS ABOVE 2MB.\n[INF] MULTITHREADING IS RECOMMENDED.\n";
+            std::cout << "[INF] YOUR CPU SUPPORTS UP TO " << maxThreads << " THREADS.\n";
             std::cout << "SPECIFY NUMBER OF THREADS (MIN 4, MAX " << maxThreads << "): ";
             std::cin >> numThreads;
 
@@ -60,11 +73,15 @@ bool mailsystem::extractor() {
                 std::cin.ignore(10000, '\n');
                 clearConsole();
                 std::cout << "INVALID INPUT. PLEASE ENTER BETWEEN 4 AND " << maxThreads << ".\n";
+                delay(2);
+                clearConsole();
                 numThreads = 0;
             }
 
         } while (numThreads < 4 || numThreads > maxThreads);
     }
+    servicedisplay("EMAIL EXTRACTOR");
+    std::cout << "[INF] EMAIL EXTRACTOR RUNNING, USING " << numThreads << " THREADS...\n";
     size_t chunkSize = fileSize / numThreads;
     std::vector<std::thread> threads;
     std::unordered_set<std::string> results;
@@ -74,14 +91,16 @@ bool mailsystem::extractor() {
         size_t end = (i == numThreads - 1) ? fileSize : (i + 1) * chunkSize;
         while (end < fileSize && data[end] != ' ' && data[end] != '\n') ++end;
         std::string chunk = data.substr(start, end - start);
-        threads.emplace_back(extract, std::cref(chunk), std::ref(results), std::ref(resultsMutex));
+        threads.emplace_back(&mailsystem::extract,
+            this,
+            chunk,
+            std::ref(results));
     }
     for (auto& t : threads) t.join();
-    std::ofstream write(filepath / "results.txt");
+    std::ofstream write(filepath / "extracted.txt");
     if (!write) {
-        clearConsole();
         std::cout << "[ERR] PROGRAM FAILED TO WRITE EXTRACTED RESULTS TO FILE.\n";
-        delay(4);
+        delay(3);
         return false;
     }
 
@@ -90,9 +109,8 @@ bool mailsystem::extractor() {
     }
     write.close();
 
-    clearConsole();
     std::cout << "[INF] " << results.size() << " TOTAL EMAILS EXTRACTED SUCCESSFULLY.\n";
-    delay(5);
+    delay(3);
     return true;
 }
 bool mailsystem::sorter() {

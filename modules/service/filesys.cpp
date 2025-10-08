@@ -6,21 +6,21 @@
 
 bool filesystemready = false;
 managefilesystem::managefilesystem() {
+    clearConsole();
     if (filesystemready) return;
     char c;
     std::string root;
     std::string project;
     do {
-        std::cout << "\t\t=============================================" << std::endl;
-        std::cout << "\t\t  Welcome to Echomail File System Settings   " << std::endl;
-        std::cout << "\t\t=============================================" << std::endl;
+        std::cout << "=============================================" << std::endl;
+        std::cout << "      $ECHO: ECHOMAIL SYSTEM FILE CHECK      " << std::endl;
+        std::cout << "=============================================" << std::endl;
         std::cout << "\033[94m[1] \033[93mDESKTOP\n" << "\033[94m[2] \033[93mDOWNLOADS\n"
             << "\033[94m[3] \033[93mDOCUMENTS\n" << "\033[92m\033[1mCHOOSE PARENT DIRECTORY [0 EXIT]: ";
         std::cin >> c;
-        clearConsole();
         switch (c) {
         case '0':
-            std::cout << "\033[92m\033[1mTERMINATING PROGRAM...\n";
+            std::cout << "\033[92m\033[1m[INF] TERMINATING PROGRAM IN 2 SECONDS...\n";
             delay(2);
             clearConsole();
             exit(0);
@@ -40,7 +40,7 @@ managefilesystem::managefilesystem() {
             clearConsole();
             continue;
         }
-        std::cout << "\033[92m\033[1mSet project name: \033[0m";
+        std::cout << "\033[92m\033[1mSET OR GET FILE PROJECT BY NAME: \033[0m";
         std::cin >> project;
         if (project.empty()) {
             std::cout << "\033[91m[WAR] CANNOT BE EMPTY! PLEASE TRY AGAIN.\033[0m" << std::endl;
@@ -55,7 +55,6 @@ managefilesystem::managefilesystem() {
         exit(0);
     }
     homedir = fs::path(root).string();
-    std::cout << homedir;
     filesystemready = true;
     delay(2);
     clearConsole();

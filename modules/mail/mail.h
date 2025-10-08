@@ -10,6 +10,7 @@
 #include "../service/filesys.h"
 
 class mailsystem : public managefilesystem {
+    std::mutex mtx;
 public:
     bool sorter();
     bool extractor();
@@ -17,5 +18,7 @@ public:
     bool mailvariable();
     bool smtptester();
     void tester();
+    void extract(const std::string text, std::unordered_set<std::string>& results);
+
 };
 #endif

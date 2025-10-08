@@ -16,15 +16,13 @@
 
 namespace fs = std::filesystem;
 class GeneralUtility {
-protected:
-    std::mutex mtx;
 public:
-
     bool makeRootDirectory(std::string& root, std::string directorychoice);
     bool makeDirectory(const std::string root, std::string directory);
     bool createTextFile(const std::string parent, const std::string filename);
-    void extract(const std::string text, std::unordered_set<std::string>& results);
     void toUppercase(std::string& str);
+    void servicedisplay(const std::string title);
+    bool errormessage(int code)
     void clearConsole();
     void delay(int x);
 };
