@@ -22,7 +22,7 @@ public:
     bool createTextFile(const std::string parent, const std::string filename);
     void toUppercase(std::string& str);
     void servicedisplay(const std::string title);
-    bool errormessage(int code)
+    bool errormessage(size_t code);
     void clearConsole();
     void delay(int x);
 };

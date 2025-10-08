@@ -59,27 +59,28 @@ bool mailsystem::extractor() {
     std::string data(fileSize, '\0');
     read.read(&data[0], fileSize);
     read.close();
-    size_t numThreads = 4;
+    size_t numThreads = 2;
     if (fileSize > 2 * 1024 * 1024) {
         size_t maxThreads = std::thread::hardware_concurrency();
         do {
-            std::cout << "[INF] DATA SIZE FOUND IS ABOVE 2MB.\n[INF] MULTITHREADING IS RECOMMENDED.\n";
-            std::cout << "[INF] YOUR CPU SUPPORTS UP TO " << maxThreads << " THREADS.\n";
-            std::cout << "SPECIFY NUMBER OF THREADS (MIN 4, MAX " << maxThreads << "): ";
+            std::cout << "[INF] DATA SIZE FOUND IS ABOVE 2MB.\n[INF] MULTITHREADING IS RECOMMENDED.\n"
+                << "[INF] YOUR CPU SUPPORTS UP TO " << maxThreads << " THREADS.\n"
+                << "SPECIFY NUMBER OF THREADS (MIN 2, MAX " << maxThreads << "): ";
             std::cin >> numThreads;
 
-            if (std::cin.fail() || numThreads < 4 || numThreads > maxThreads) {
+            if (std::cin.fail() || numThreads < 2 || numThreads > maxThreads) {
                 std::cin.clear();
                 std::cin.ignore(10000, '\n');
                 clearConsole();
-                std::cout << "INVALID INPUT. PLEASE ENTER BETWEEN 4 AND " << maxThreads << ".\n";
+                std::cout << "INVALID INPUT. YOU HAVE BETWEEN 2 AND " << maxThreads << " THREADS.\n";
                 delay(2);
                 clearConsole();
                 numThreads = 0;
             }
 
-        } while (numThreads < 4 || numThreads > maxThreads);
+        } while (numThreads < 2 || numThreads > maxThreads);
     }
+    clearConsole();
     servicedisplay("EMAIL EXTRACTOR");
     std::cout << "[INF] EMAIL EXTRACTOR RUNNING, USING " << numThreads << " THREADS...\n";
     size_t chunkSize = fileSize / numThreads;

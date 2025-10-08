@@ -63,7 +63,7 @@ void GeneralUtility::servicedisplay(const std::string title) {
         << "   ECHOMAIL V2 " << title << std::endl
         << "====================================\n";
 }
-bool errormessage(int code) {
+bool GeneralUtility::errormessage(size_t code) {
     switch (code) {
     case 324:
         std::cerr << "[ERR] PEOGRAM FAILED TO CREATE ROOT DIRECTORY.\n";
