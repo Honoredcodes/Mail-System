@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
+#include "../includes/colors.h"
 
 bool filesystemready = false;
 managefilesystem::managefilesystem() {
@@ -12,15 +12,22 @@ managefilesystem::managefilesystem() {
     std::string root;
     std::string project;
     do {
-        std::cout << "=============================================" << std::endl;
-        std::cout << "      $ECHO: ECHOMAIL SYSTEM FILE CHECK      " << std::endl;
-        std::cout << "=============================================" << std::endl;
-        std::cout << "\033[94m[1] \033[93mDESKTOP\n" << "\033[94m[2] \033[93mDOWNLOADS\n"
-            << "\033[94m[3] \033[93mDOCUMENTS\n" << "\033[92m\033[1mCHOOSE PARENT DIRECTORY [0 EXIT]: ";
+        std::cout
+            << Color::brightGreen << "=============================================" << Color::reset << std::endl
+            << Color::brightBlue << "      $ECHO: " << Color::brightGreen << "ECHOMAIL SYSTEM FILE CHECK      " << std::endl
+            << Color::brightGreen << "=============================================" << Color::reset << std::endl
+            << Color::brightRed << "[1] " << Color::brightGreen << "DESKTOP\n"
+            << Color::brightRed << "[2] " << Color::brightGreen << "DOWNLOADS\n"
+            << Color::brightRed << "[3] " << Color::brightGreen << "DOCUMENTS\n"
+            << Color::brightGreen << "CHOOSE PARENT DIRECTORY [0 EXIT]: " << Color::reset;
         std::cin >> c;
         switch (c) {
         case '0':
-            std::cout << "\033[92m\033[1m[INF] TERMINATING PROGRAM IN 2 SECONDS...\n";
+            clearConsole();
+            std::cout
+                << Color::brightGreen
+                << "[INF] TERMINATING PROGRAM IN 2 SECONDS...\n"
+                << Color::reset;
             delay(2);
             clearConsole();
             exit(0);
